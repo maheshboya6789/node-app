@@ -61,8 +61,8 @@ pipeline {
                 sh "./changeTag.sh ${DOCKER_TAG}"
                 sshagent(['kopps']) 
                   {
-                    sh 'scp -o StrictHostKeyChecking=no services.yml node-app-pod.yml ubuntu@172.31.1.218:/home/ubuntu/'
-                    sh"sudo service sshd restart"
+                    sh "scp -o StrictHostKeyChecking=no services.yml node-app-pod.yml ubuntu@172.31.1.218:/home/ubuntu/"
+                    sh "sudo service sshd restart"
                     script{
                         try{
                             
