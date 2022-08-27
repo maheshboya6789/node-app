@@ -4,7 +4,8 @@ pipeline {
     stages {
         stage('GitHub Repo') {
             steps {
-                git "git clone https://github.com/anilkumarpuli/node-app.git"
+                git "https://github.com/anilkumarpuli/node-app.git"
+            
             }
         }
         
