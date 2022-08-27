@@ -1,24 +1,26 @@
 pipeline {
     agent any
-    environment{
-        DOCKER_TAG = getDockerTag()
-    }
-    stages{
-        stage('git clone')
-        {
-        steps{
-            sh'rm -rf node-app'
-            sh' git clone https://github.com/anilkumarpuli/node-app.git'
+
+    stages {
+        stage('GitHub Repo') {
+            steps {
+                git "git clone https://github.com/anilkumarpuli/node-app.git"
+            }
         }
+        
+        stage('Maven Build') {
+            steps {
+                sh "mvn clean install"
+            }
         }
-        stage('build'){
-            steps{
-                sh'mvn clean install'
+        
+         stage('Deploy to Tomcat server') {
+            steps {
+              sshagent(['Deploy-User']) {
+                
+                   sh "scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/cdk-demo/target/webapp.war ubuntu@35.80.21.34:/opt/tomcat/webapps" 
+               }
             }
         }
     }
-}
-def getDockerTag(){
-    def tag  = sh script: 'git rev-parse HEAD', returnStdout: true
-    return tag
 }
